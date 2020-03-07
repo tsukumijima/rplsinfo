@@ -6,7 +6,8 @@
 このリポジトリは、2018年8月頃まで Vesti La Giubba ( http://saysaysay.net/rplstool/rplsinfo ) で公開されていた、  
 rplsinfo ( Windows 版) の v1.5.1 ( [Axfc のミラー](http://www.axfc.net/u/3933238)) に同梱されているソースコードのミラーです。  
 
-ビルド環境を Visual Studio 2019 に更新したこと、rplsinfo.sln（ソリューションファイル）を作成したこと、この README.md を作成したこと以外はオリジナルのままとなっています。  
+ビルド環境を Visual Studio 2019 (VS2019) に更新したこと、rplsinfo.sln（ソリューションファイル）を作成したこと、この README.md を作成したこと以外はオリジナルのままとなっています。  
+このリポジトリは VS2019 対応になっていますが、Release ページの rplsinfo151.zip はオリジナルのものです。  
 以下のドキュメントは http://saysaysay.net/rplstool/rplsinfo の内容を現状に合わせて一部改変し、Markdown 形式に書き換えたものです。  
 また、[rplsinfo.txt](rplsinfo.txt)・[ソースファイルについて.txt](ソースファイルについて.txt) も参照してください。
 
