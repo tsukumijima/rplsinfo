@@ -46,6 +46,8 @@ int32_t			parseEit(const uint8_t*, ProgInfo*, const CopyParams*);
 void			parseSdt(const uint8_t*, ProgInfo*, const int32_t, const CopyParams*);
 
 size_t			putGenreStr(WCHAR *, const size_t, const int32_t *);
+size_t			putFormatStr(WCHAR *buf, const size_t bufsize, const int32_t format);
+size_t			putSamplingrateStr(WCHAR *, const size_t, const int32_t);
 
 
 

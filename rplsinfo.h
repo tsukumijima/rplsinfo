@@ -22,6 +22,8 @@
 #define		F_ProgDetail			14
 #define		F_ProgExtend			15
 #define		F_ProgGenre				16
+#define		F_ProgVideo				17
+#define		F_ProgAudio				18
 
 #define		S_NORMAL				0
 #define		S_TAB					1
@@ -79,6 +81,12 @@ typedef struct {
 	WCHAR		pextend[CONVBUFSIZE];
 	int32_t		pextendlen;
 	int32_t		genre[3];
+	int32_t		videoformat;
+	int32_t		audioformat[8];
+	int32_t		audiosamplingrate[8];
+	CHAR		audiolang[8][8];
+	WCHAR		audiotext[8][32];
+	int32_t		audiotextlen[8];
 	WCHAR		fullpath[_MAX_PATH];
 	WCHAR		fname[_MAX_PATH];
 	WCHAR		fext[_MAX_PATH];
