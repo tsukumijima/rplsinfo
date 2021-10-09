@@ -6,11 +6,12 @@
 このリポジトリは、2018年8月頃まで Vesti La Giubba (http://saysaysay.net/rplstool/rplsinfo) にて公開されていた、  
 rplsinfo v1.5.1 ([Axfc のミラー](http://www.axfc.net/u/3933238)) に同梱されているソースコードのミラーです。  
 
-ビルド環境を Visual Studio 2019 (VS2019) に更新したこと、rplsinfo.sln（ソリューションファイル）を作成したこと、この Readme.md を作成したこと以外はオリジナルのままとなっています。  
-このリポジトリは VS2019 に更新されていますが、Release の [v1.5.1](https://github.com/tsukumijima/rplsinfo/releases) (rplsinfo151.zip) に関してはオリジナルのもの（再配布）です。  
+番組の映像情報・音声情報の出力に対応したこと、ビルド環境を Visual Studio 2019 (VS2019) に更新したこと、rplsinfo.sln（ソリューションファイル）を作成したこと、rplsinfo.txt を現状に合わせて改変したこと、この Readme.md を作成したこと以外はオリジナルのままとなっています。  
+このリポジトリは VS2019 に更新されていますが、Release の [v1.5.1](https://github.com/tsukumijima/rplsinfo/releases/tag/v1.5.1) (rplsinfo151.zip) に関してはオリジナルのもの（再配布）です。  
+Release の [v1.5.2](https://github.com/tsukumijima/rplsinfo/releases/tag/v1.5.2) (rplsinfo152.zip) は [toisme 氏のフォーク](https://github.com/toisme/rplsinfo/tree/develop) の変更を取り込んだものです。番組の映像情報・音声情報の出力に対応しています。
 
 以下のドキュメントは [http://saysaysay.net/rplstool/rplsinfo](https://web.archive.org/web/20161126173554/http://saysaysay.net/rplstool/rplsinfo) に記載されていた情報を現状に合わせて一部改変し、Markdown 形式に書き換えたものです。  
-オリジナルの [rplsinfo.txt](rplsinfo.txt)・[ソースファイルについて.txt](ソースファイルについて.txt) も参照してください。
+[rplsinfo.txt](rplsinfo.txt)・[ソースファイルについて.txt](ソースファイルについて.txt) も参照してください。
 
 TS ファイルから番組情報を取得できるおそらく唯一のツールで、[TVRemotePlus](https://github.com/tsukumijima/TVRemotePlus) に組み込んで使わせて頂いています。  
 rplsinfo の作者の方に感謝します。
@@ -43,7 +44,7 @@ rplsinfo は、rpls ファイル, TS ファイルの番組情報をテキスト�
 * src フォルダ … アプリケーションのソースファイル
 
 ## 動作環境
-本ツールは主に Windows10 で動作を確認しています。
+本ツールは主に Windows 10 で動作を確認しています。
 開発環境は Visual Studio 2019 です。
 
 ## アプリケーションの使用方法
@@ -88,7 +89,7 @@ rplsinfo は、rpls ファイル, TS ファイルの番組情報をテキスト�
   - 各項目を[項目名]付で出力します。各項目は2回の改行で区切られます。
   - 改行などの制御文字もそのまま出力します。
 
-出力したい番組情報を指定するスイッチ [-fukdtpzaoscnbieg] は以下の通りです。情報を出力したい順番に、まとめて指定して下さい。
+出力したい番組情報を指定するスイッチ [-fukdtpzaoscnbiegvm] は以下の通りです。情報を出力したい順番に、まとめて指定して下さい。
 
 * -f … ファイル名を出力します。
 * -u … フルパスファイル名を出力します。
@@ -106,6 +107,8 @@ rplsinfo は、rpls ファイル, TS ファイルの番組情報をテキスト�
 * -i … 番組内容情報を出力します。
 * -e … 番組内容詳細情報を出力します。
 * -g … 番組ジャンル情報を出力します。
+* -v … 番組の映像情報を出力します。
+* -m … 番組の音声情報を出力します。
 
 その他のスイッチ一覧です。必要に応じて指定して下さい。
 
@@ -146,7 +149,8 @@ rplsinfo は、rpls ファイル, TS ファイルの番組情報をテキスト�
 
 Version | Windows版 更新内容
 ---- | ----
-1.5.1 | ファイルを開く際、FILE_SHARE_READ を指定するようにしました。開発環境を VisualStudio 2017 に変更しました。
+1.5.2 | 番組の映像情報・音声情報の出力に対応しました。開発環境を Visual Studio 2019 に変更しました。
+1.5.1 | ファイルを開く際、FILE_SHARE_READ を指定するようにしました。開発環境を Visual Studio 2017 に変更しました。
 1.5 | 文字コード変換ルーチンを更新しました。
 1.4 | 文字コード変換ルーチンを更新しました。ファイルサイズ情報出力オプション -k を追加しました。-l, -j, -q オプションを追加しました。
 1.3 | 文字コード変換ルーチンの不具合を修正しました。
