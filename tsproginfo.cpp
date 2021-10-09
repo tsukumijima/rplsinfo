@@ -701,6 +701,7 @@ void parseSit(const uint8_t *sitbuf, ProgInfo *proginfo, const CopyParams* param
 int32_t parseEit(const uint8_t *eitbuf, ProgInfo *proginfo, const CopyParams* param)
 {
 	for (int32_t i = 0; i < 3; i++) proginfo->genre[i] = -1;			// 番組ジャンル情報をクリアしておく
+	for (int32_t i = 0; i < 8; i++) proginfo->audioformat[i] = -1;			// 音声情報をクリアしておく
 
 	const int32_t 	totallen	= getSectionLength(eitbuf);
 	const int32_t	serviceID	= eitbuf[0x03] * 256 + eitbuf[0x04];
@@ -792,6 +793,43 @@ int32_t parseEit(const uint8_t *eitbuf, ProgInfo *proginfo, const CopyParams* pa
 					}
 					const int32_t	iextlen = eitbuf[i];
 					i += (iextlen + 1);
+					break;
+				}
+				case 0x50: {												// コンポーネント記述子
+					proginfo->videoformat = (eitbuf[i + 2] & 0x0F) * 256 + eitbuf[i + 3];
+					i += (eitbuf[i + 1] + 2);
+					break;
+				}
+				case 0xC4: {												// 音声コンポーネント記述子
+					int32_t numAudio;
+					for (numAudio = 0; numAudio < 8; numAudio++) {
+						if (proginfo->audioformat[numAudio] == -1) break;
+					}
+					proginfo->audioformat[numAudio] = (eitbuf[i + 2] & 0x0F) * 256 + eitbuf[i + 3];
+					proginfo->audiosamplingrate[numAudio] = (eitbuf[i + 7] & 0x0E) >> 1;
+					my_memcpy_s(proginfo->audiolang[numAudio], 8, &eitbuf[i + 8], 3);
+					if (eitbuf[i + 7] & 0x80) {
+						proginfo->audiolang[numAudio][3] = '/'; // / で連結
+						my_memcpy_s(&proginfo->audiolang[numAudio][4], 8, &eitbuf[i + 11], 3);
+						proginfo->audiolang[numAudio][7] = '\0';
+					}
+					else proginfo->audiolang[numAudio][3] = '\0';
+					WCHAR sbuf[32];
+					if (eitbuf[i + 7] & 0x80) proginfo->audiotextlen[numAudio]   = (int32_t)conv_to_unicode((char16_t*)sbuf, CONVBUFSIZE, eitbuf + i + 14, eitbuf[i + 1] - 12, param->bCharSize, param->bIVS);
+					else proginfo->audiotextlen[numAudio]   = (int32_t)conv_to_unicode((char16_t*)sbuf, CONVBUFSIZE, eitbuf + i + 11, eitbuf[i + 1] - 9, param->bCharSize, param->bIVS);
+					// 改行を / に変換
+					size_t	dst = 0;
+					for (size_t src = 0; src < proginfo->audiotextlen[numAudio]; src++)
+					{
+						if (sbuf[src] == 0x000D && sbuf[src + 1] == 0x000A) {
+							proginfo->audiotext[numAudio][dst++] = 0x002F;
+							src++;
+						}
+						else if (sbuf[src] == 0x000D) proginfo->audiotext[numAudio][dst++] = 0x002F;
+						else if (sbuf[src] == 0x000A) proginfo->audiotext[numAudio][dst++] = 0x002F;
+						else proginfo->audiotext[numAudio][dst++] = sbuf[src];
+					}
+					i += (eitbuf[i + 1] + 2);
 					break;
 				}
 				default:
@@ -920,4 +958,56 @@ size_t putGenreStr(WCHAR *buf, const size_t bufsize, const int32_t* genre)
 	}
 
 	return len;
+}
+
+size_t putFormatStr(WCHAR *buf, const size_t bufsize, const int32_t format)
+{
+	const WCHAR	*str_resolution[] = {
+		L"480i(525i)", L"-", L"-", L"-", L"-", L"-", L"-", L"-",
+		L"-", L"2160p", L"480i(525i)", L"1080i(1125i)", L"720p(750p)", L"240p", L"1080p(1125p)", L"-"
+	};
+
+	const WCHAR	*str_aspect[] = {
+		L"-", L"アスペクト比4:3", L"アスペクト比16:9 パンベクトルあり", L"アスペクト比16:9 パンベクトルなし", L"アスペクト比 > 16:9"
+	};
+
+	const WCHAR	*str_audio[] = {
+		L"-", L"1/0モード（シングルモノ）", L"1/0＋1/0モード（デュアルモノ）", L"2/0モード（ステレオ）", L"2/1モード", L"3/0モード", L"2/2モード", L"3/1モード",
+		L"3/2モード", L"3/2＋LFEモード（3/2.1モード）", L"3/3.1モード", L"2/0/0-2/0/2-0.1モード", L"5/2.1モード", L"3/2/2.1モード", L"2/0/0-3/0/2-0.1モード", L"0/2/0-3/0/2-0.1モード",
+
+		L"2/0/0-3/2/3-0.2モード", L"3/3/3-5/2/3-3/0/0.2モード", L"-", L"-", L"-", L"-", L"-", L"-",
+		L"-", L"-", L"-", L"-", L"-", L"-", L"-", L"-",
+
+		L"-", L"-", L"-", L"-", L"-", L"-", L"-", L"-",
+		L"-", L"-", L"-", L"-", L"-", L"-", L"-", L"-",
+
+		L"-", L"-", L"-", L"-", L"-", L"-", L"-", L"-",
+		L"-", L"-", L"-", L"-", L"-", L"-", L"-", L"-",
+
+		L"視覚障害者用音声解説", L"聴覚障害者用音声", L"-", L"-", L"-", L"-", L"-", L"-",
+		L"-", L"-", L"-", L"-", L"-", L"-", L"-", L"-",
+	};
+
+	size_t	len;
+
+	if((format & 0xFF00) == 0x0100) {
+		len = swprintf_s(buf, bufsize, L"%s、%s", str_resolution[(format & 0x00F0) >> 4], str_aspect[format & 0x000F]);
+	} else if((format & 0xFF00) == 0x0500) {
+		len = swprintf_s(buf, bufsize, L"H.264|MPEG-4 AVC、%s、%s", str_resolution[(format & 0x00F0) >> 4], str_aspect[format & 0x000F]);
+	} else if((format & 0xFF00) == 0x0200) {
+		len = swprintf_s(buf, bufsize, L"%s", str_audio[format & 0x00FF]);
+	} else {
+		len =  swprintf_s(buf, bufsize, L"n/a");
+	}
+
+	return len;
+}
+
+size_t putSamplingrateStr(WCHAR *buf, const size_t bufsize, const int32_t samplingrate)
+{
+	const WCHAR	*str_samplingrate[] = {
+		L"-", L"16kHz", L"22.05kHz", L"24kHz", L"-", L"32kHz", L"44.1kHz", L"48kHz"
+	};
+
+	return swprintf_s(buf, bufsize, L"%s", str_samplingrate[samplingrate]);
 }
