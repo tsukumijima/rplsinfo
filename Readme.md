@@ -35,13 +35,15 @@ rplsinfo は、rpls ファイル, TS ファイルの番組情報をテキスト�
   - [更新履歴](#更新履歴)
 
 ## ダウンロード
+[rplsinfo Version 1.5.2 for Windows](https://github.com/tsukumijima/rplsinfo/releases/download/v1.5.2/rplsinfo152.zip)
+
 [rplsinfo Version 1.5.1 for Windows](https://github.com/tsukumijima/rplsinfo/releases/download/v1.5.1/rplsinfo151.zip)
 
 ### アーカイブの内容
 * rplsinfo.txt … 説明ファイル
 * rplsinfo.exe … アプリケーション本体
 * x64 フォルダ … 64bit版アプリケーション本体
-* src フォルダ … アプリケーションのソースファイル
+* src フォルダ … アプリケーションソースファイル（ Version 1.5.1 のみ）
 
 ## 動作環境
 本ツールは主に Windows 10 で動作を確認しています。
