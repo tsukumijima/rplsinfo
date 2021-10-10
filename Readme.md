@@ -3,7 +3,7 @@
 
 ## このリポジトリについて
 
-このリポジトリは、2018年8月頃まで Vesti La Giubba (http://saysaysay.net/rplstool/rplsinfo) にて公開されていた、  
+このリポジトリは、2018年8月頃まで Vesti La Giubba ([http://saysaysay.net/rplstool/rplsinfo](https://web.archive.org/web/20161126173554/http://saysaysay.net/rplstool/rplsinfo)) にて公開されていた、  
 rplsinfo v1.5.1 ([Axfc のミラー](http://www.axfc.net/u/3933238)) に同梱されているソースコードのミラーです。  
 
 番組の映像情報・音声情報の出力に対応したこと、ビルド環境を Visual Studio 2019 (VS2019) に更新したこと、rplsinfo.sln（ソリューションファイル）を作成したこと、rplsinfo.txt を現状に合わせて改変したこと、この Readme.md を作成したこと以外はオリジナルのままとなっています。  
